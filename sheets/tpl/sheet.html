@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>{{sheet.title}}</title>
+<link href="/www/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+<style>
+	#sheet td {
+		padding: 0;
+		border-collapse: collapse;
+		border-spacing: 0;
+		border: thin solid silver;
+	}
+	#sheet th {
+		border: thin solid silver;
+		font-weight: normal;
+		background: #EEE;
+		min-width: 3em;
+		font-size: 10pt;
+		padding: 0.25em;
+	}
+	
+	input.updating {
+		box-shadow: 0 0 0 1px greenyellow;
+		position: relative;
+		z-index: 2;
+	}
+	input {
+		border: 0;
+		margin: 0;
+		border-collapse: collapse;
+		width: 100%;
+		padding: 0.1em;
+	}
+	input:focus {
+		outline: none;
+		position: relative;
+		box-shadow: 0 0 2px 2px lightblue;
+	}
+	input.updated {
+		background: green;
+	}
+
+	#sheet_title {
+		margin:		1px;
+		padding:	0.25em;
+		font-size:	125%;
+	}
+</style>
+<script src="/www/js/jquery-1.8.3.min.js"></script>
+<script>var sheetid = "{{sheet.sheetid}}";</script>
+<script src="/www/js/sheets.js"></script>
+</head>
+<body>
+	<input id="sheet_title" value="{{sheet.title}}"/>
+
+	<table id="sheet">
+		<thead>
+			<tr>
+			<th>&nbsp;</th>
+			{% for x in range(sheet.width) %}
+				<th>{{chr(65+x)}}</th>
+			{% end %}
+			</tr>
+		</thead>
+	{% for y in range(sheet.height) %}
+	<tr>
+		<th>{{y+1}}</th>
+		{% for x in range(sheet.width) %}
+			<td>
+				<input data-x={{x}} data-y={{y}} value="{{sheet.get(x=x, y=y)}}"/>
+			</td>
+		{% end %}
+	</tr>
+	{% end %}
+	</table>
+
+</body>
+</html>
