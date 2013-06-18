@@ -4,6 +4,10 @@ function Sheet() {
 		var target = $("#sheet td").find("[data-x=" + x + "][data-y=" + y + "]");
 		target.val(value);
 	}
+	this.settitle = function(title) {
+		document.title = title;
+		$('#sheet_title').val(title);
+	}
 }
 
 $(function() {
@@ -25,6 +29,9 @@ $(function() {
 				// Update cell
 				sheet.set(data.x, data.y, data.v);
 				break;
+			case "t":
+				sheet.settitle(data.t);
+				break;
 			case "m":
 				console.log(data.m);
 				break;
@@ -37,7 +44,7 @@ $(function() {
 		input.addClass('updating');
 
 		jQuery.post('/sheet/' + sheetid, {"a":"t", "t":title}).done(function() {
-			document.title = input.val();
+			sheet.settitle(title);
 			input.removeClass('updating');
 		})
 	});

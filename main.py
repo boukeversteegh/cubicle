@@ -64,11 +64,12 @@ class SheetHandler(tornado.web.RequestHandler):
 			except:
 				v = ""
 			sheet.set(x=x,y=y, value=v)
-			self.events.trigger('CELL', **{"sheet": sheet, "x":x, "y":y})
+			self.events.trigger('update', **{"sheet": sheet, "a":a, "x":x, "y":y, "v":v})
 		elif a == 't':
 			# Title update
 			title = self.get_argument('t')
 			sheet.title = title
+			self.events.trigger('update', **{"sheet": sheet, "a":a, "t": title})
 
 		time.sleep(0.5)
 
@@ -76,11 +77,11 @@ class SheetWebsocketHandler(tornado.websocket.WebSocketHandler):
 	def initialize(self, sheets, eventhandler):
 		self.sheets = sheets
 		self.events = eventhandler
-		def cb_cell(sheet, x, y):
+		def cb_update(sheet, **kwargs):
 			if self.sheetid == sheet.sheetid:
-				self.write_message(json.dumps({"a": "c", "x":x, "y":y, "v":sheet.get(x, y)}))
+				self.write_message(json.dumps(kwargs))
 
-		self.binding = self.events.bind('CELL', cb_cell)
+		self.binding = self.events.bind('update', cb_update)
 
 	def open(self):
 		print 'new connection'
