@@ -71,7 +71,7 @@ class SheetHandler(tornado.web.RequestHandler):
 			sheet.title = title
 			self.events.trigger('update', **{"sheet": sheet, "a":a, "t": title})
 
-		time.sleep(0.5)
+		#time.sleep(0.5)
 
 class SheetWebsocketHandler(tornado.websocket.WebSocketHandler):
 	def initialize(self, sheets, eventhandler):

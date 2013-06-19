@@ -13,7 +13,7 @@ function Sheet() {
 $(function() {
 
 	var sheet = new Sheet();
-	var ws = new WebSocket("ws://" + location.host + "/ws/sheet");
+	var ws = new WebSocket("ws://" + document.location + ":8888/ws/sheet");
 	ws.onopen = function() {
 		ws.send(JSON.stringify({
 			"a": "listen",
